@@ -26,24 +26,38 @@
       </div>
     </nav>
 
-    <div class="container" id="container">
+    <div class="container">
+      <div class="row" id="container"></div>
     </div><!-- /.container -->
 
     <script>
       const container = document.getElementById("container")
       fetch('/api/movies').then(response => response.json()).then(movieInfos => {
         for (let movieInfo of movieInfos) {
-          let element = document.createElement("p")
-          element.textContent = movieInfo.title
-          container.append(element)
-
+          let wrapper = document.createElement("div")
+          wrapper.setAttribute("class", "col-sm-6 col-md-4")
+          let thumbnail = document.createElement("div")
+          thumbnail.setAttribute("class", "thumbnail")
           let anchor = document.createElement("a")
           anchor.setAttribute("href", movieInfo.url)
           let image = document.createElement("img")
+          image.setAttribute("style", "height: 100%; width: 100%; display: block;")
           image.setAttribute("src", movieInfo.image_url)
+          let caption = document.createElement("div")
+          caption.setAttribute("class", "caption")
+          let movieTitle = document.createElement("h4")
+          movieTitle.textContent = movieInfo.title
+          let infoText = document.createElement("p")
+          infoText.innerHTML =
+           `Рейтинг: <b>${movieInfo.rating_value}</b>, голосов: <b>${movieInfo.rating_count}</b>`
           
           anchor.appendChild(image)
-          container.append(anchor)
+          caption.append(movieTitle)
+          caption.append(infoText)
+          thumbnail.append(anchor)
+          thumbnail.append(caption)
+          wrapper.appendChild(thumbnail)
+          container.appendChild(wrapper)
         }
       })
     </script>
