@@ -2,6 +2,7 @@ import logging
 import re
 import sys
 import urllib.parse
+from concurrent.futures import ThreadPoolExecutor
 
 import requests
 from bs4 import BeautifulSoup
@@ -83,13 +84,13 @@ if __name__ == "__main__":
     try:
         html = fetch_afisha_page()
         titles = parse_afisha_list(html)
-        movies = []
-        for title in titles:
-            movie_info = fetch_movie_info(title)
-            if movie_info is None:
-                continue
-            movies.append((title, *movie_info))
-
+        executor = ThreadPoolExecutor()
+        movie_infos = executor.map(fetch_movie_info, titles)
+        movies = [
+            (title, *info)
+            for title, info in zip(titles, movie_infos)
+            if info is not None
+        ]
     except requests.RequestException as err:
         sys.exit(err)
 
