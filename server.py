@@ -6,7 +6,13 @@ from flask_caching import Cache
 import cinemas
 
 app = Flask(__name__)
-cache = Cache(app, config={"CACHE_TYPE": "filesystem"})
+cache = Cache(
+    app,
+    config={
+        "CACHE_TYPE": "filesystem",
+        "CACHE_DIR": join(dirname(abspath(__name__)), "cache"),
+    },
+)
 
 
 @app.route("/")
