@@ -1,8 +1,9 @@
 from flask import Flask, render_template, jsonify
+from flask_caching import Cache
 import cinemas
 
 app = Flask(__name__)
-
+cache = Cache(app, config={'CACHE_TYPE': 'filesystem'})
 
 @app.route("/")
 def films_list():
@@ -10,6 +11,7 @@ def films_list():
 
 
 @app.route("/api/movies")
+@cache.cached(timeout=50)
 def get_movies():
     movies = [
         {
