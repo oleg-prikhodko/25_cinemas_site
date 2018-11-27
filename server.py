@@ -3,7 +3,8 @@ from flask_caching import Cache
 import cinemas
 
 app = Flask(__name__)
-cache = Cache(app, config={'CACHE_TYPE': 'filesystem'})
+cache = Cache(app, config={"CACHE_TYPE": "filesystem"})
+
 
 @app.route("/")
 def films_list():
