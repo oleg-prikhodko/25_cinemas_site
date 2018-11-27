@@ -16,8 +16,18 @@ def fetch_afisha_page(url="https://www.afisha.ru/msk/schedule_cinema/"):
 
 def parse_afisha_list(raw_html):
     soup = BeautifulSoup(raw_html, "html.parser")
-    movie_titles = soup.find_all("h3", {"class": "card__title"})
-    return [title.string.strip() for title in movie_titles]
+    cards = soup.select("div.card.cards-grid__item")
+    afisha_movie_infos = [
+        (
+            card.select_one("h3.card__title").string.strip(),
+            "https://www.afisha.ru{}".format(
+                card.select_one("a.card__link")["href"]
+            ),
+            card.select_one("img.card__image")["src"],
+        )
+        for card in cards
+    ]
+    return afisha_movie_infos
 
 
 def fetch_movie_info(movie_title):
@@ -63,8 +73,8 @@ def fetch_movie_info(movie_title):
 
 
 def sort_movies_by_rating(movies):
-    default_rating = 0
-    rating_value_index = 1
+    default_rating = 0.0
+    rating_value_index = 3
     return sorted(
         movies,
         key=lambda movie: float(movie[rating_value_index])
@@ -76,19 +86,23 @@ def sort_movies_by_rating(movies):
 
 def output_movies_to_console(movies):
     for movie in movies:
-        print("{} | {} | {}".format(*movie))
+        print("{} | {} | {} | {} | {}".format(*movie))
 
 
 def get_movies(max_movies=10):
     try:
         html = fetch_afisha_page()
-        titles = parse_afisha_list(html)
+        afisha_infos = parse_afisha_list(html)
+        title_index = 0
+        titles = list(map(lambda info: info[title_index], afisha_infos))
         executor = ThreadPoolExecutor()
-        movie_infos = executor.map(fetch_movie_info, titles)
+        kinopoisk_infos = executor.map(fetch_movie_info, titles)
         movies = [
-            (title, *info)
-            for title, info in zip(titles, movie_infos)
-            if info is not None
+            (*afisha_info, *kinopoisk_info)
+            for afisha_info, kinopoisk_info in zip(
+                afisha_infos, kinopoisk_infos
+            )
+            if kinopoisk_info is not None
         ]
         movies = sort_movies_by_rating(movies)[:max_movies]
         return movies
