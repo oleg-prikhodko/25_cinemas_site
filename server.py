@@ -1,5 +1,8 @@
-from flask import Flask, render_template, jsonify
+from os.path import abspath, dirname, join
+
+from flask import Flask, jsonify, render_template
 from flask_caching import Cache
+
 import cinemas
 
 app = Flask(__name__)
@@ -19,8 +22,10 @@ def get_movies():
             "title": title,
             "rating_value": rating_value,
             "rating_count": rating_count,
+            "url": url,
+            "image_url": image_url,
         }
-        for title, rating_value, rating_count in cinemas.get_movies()
+        for title, url, image_url, rating_value, rating_count in cinemas.get_movies()
     ]
     return jsonify(movies)
 
