@@ -74,13 +74,12 @@ def sort_movies_by_rating(movies):
     )
 
 
-def output_movies_to_console(movies, max_movies=10):
-    movies = movies[:max_movies]
+def output_movies_to_console(movies):
     for movie in movies:
         print("{} | {} | {}".format(*movie))
 
 
-def get_movies():
+def get_movies(max_movies=10):
     try:
         html = fetch_afisha_page()
         titles = parse_afisha_list(html)
@@ -91,7 +90,7 @@ def get_movies():
             for title, info in zip(titles, movie_infos)
             if info is not None
         ]
-        movies = sort_movies_by_rating(movies)
+        movies = sort_movies_by_rating(movies)[:max_movies]
         return movies
     except requests.RequestException as err:
         sys.exit(err)
