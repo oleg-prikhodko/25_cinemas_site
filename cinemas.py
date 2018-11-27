@@ -80,7 +80,7 @@ def output_movies_to_console(movies, max_movies=10):
         print("{} | {} | {}".format(*movie))
 
 
-if __name__ == "__main__":
+def get_movies():
     try:
         html = fetch_afisha_page()
         titles = parse_afisha_list(html)
@@ -91,8 +91,12 @@ if __name__ == "__main__":
             for title, info in zip(titles, movie_infos)
             if info is not None
         ]
+        movies = sort_movies_by_rating(movies)
+        return movies
     except requests.RequestException as err:
         sys.exit(err)
 
-    movies = sort_movies_by_rating(movies)
+
+if __name__ == "__main__":
+    movies = get_movies()
     output_movies_to_console(movies)
