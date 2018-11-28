@@ -90,6 +90,7 @@ def output_movies_to_console(movies):
 
 
 def get_movies(max_movies=10):
+    movies = []
     try:
         html = fetch_afisha_page()
         afisha_infos = parse_afisha_list(html)
@@ -106,8 +107,9 @@ def get_movies(max_movies=10):
         ]
         movies = sort_movies_by_rating(movies)[:max_movies]
         return movies
-    except requests.RequestException as err:
-        sys.exit(err)
+    except requests.RequestException:
+        logging.exception("Error occured")
+    return movies
 
 
 if __name__ == "__main__":
