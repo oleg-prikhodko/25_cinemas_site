@@ -1,6 +1,6 @@
 # Cinemas Site
 
-Site shows top 10 movies in theatres. Available at [https://movies-devman.herokuapp.com]()
+Site shows top 10 movies in theatres. Available at [heroku](https://movies-devman.herokuapp.com)
 
 # Quickstart
 
