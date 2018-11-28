@@ -1,6 +1,14 @@
 # Cinemas Site
 
-{TODO. There will be project description}
+Site shows top 10 movies in theatres. Available at [https://movies-devman.herokuapp.com]()
+
+# Quickstart
+
+If you want to launch it locally:
+```bash
+$ pip install -r requirements.txt
+$ python server.py
+```
 
 # Project Goals
 
