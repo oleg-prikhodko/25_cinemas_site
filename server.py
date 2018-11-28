@@ -1,3 +1,4 @@
+import os
 from os.path import abspath, dirname, join
 
 from flask import Flask, jsonify, render_template
@@ -14,6 +15,9 @@ cache = Cache(
     },
 )
 
+ONE_HOUR_IN_SECS = 60 * 60
+DEFAULT_PORT = 5000
+
 
 @app.route("/")
 def films_list():
@@ -21,7 +25,7 @@ def films_list():
 
 
 @app.route("/api/movies")
-@cache.cached(timeout=50)
+@cache.cached(timeout=ONE_HOUR_IN_SECS)
 def get_movies():
     movies = [
         {
@@ -37,4 +41,6 @@ def get_movies():
 
 
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", DEFAULT_PORT))
+    debug = bool(os.environ.get("FLASK_DEBUG", False))
+    app.run(host="0.0.0.0", port=port, debug=debug)
