@@ -23,12 +23,42 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="/">Что в кино</a>
         </div>
+        <div class="collapse navbar-collapse">
+          <a href="#" class="navbar-text pull-right" data-toggle="modal" data-target="#modal">API</a>
+        </div>
       </div>
     </nav>
 
     <div class="container">
       <div class="row" id="container" style="margin-bottom: 75px;"></div>
     </div><!-- /.container -->
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="modal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Информация об API</h4>
+          </div>
+          <div class="modal-body">
+            <p>Получить данные о фильмах в формате JSON 
+              можно, обратившись по адресу <a href="/api/movies">/api/movies</a>
+            </p>
+            <p>В ответе будет содержаться список фильмов 
+              с дополнительными данными о каждом из них
+            </p>
+            <p>Информация о фильме включает:</p>
+            <ul>
+              <li><b>title</b> - название фильма</li>
+              <li><b>rating_value</b> - рейтинг</li>
+              <li><b>rating_count</b> - количество проголосовавших</li>
+              <li><b>url</b> - ссылка на страницу фильма на Афише</li>
+              <li><b>image_url</b> - ссылка на обложку</li>
+            </ul>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
     <div class="navbar navbar-default navbar-fixed-bottom">
       <div class="container">
@@ -38,6 +68,7 @@
           <a href="https://www.afisha.ru">Афиша</a> 
           и <a href="https://www.kinopoisk.ru">Кинопоиск.</a>
         </p>
+      </div>
     </div>
 
     <script>
